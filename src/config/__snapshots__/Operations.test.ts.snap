@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Config Operations should getConfig match snapshot 1`] = `
+Object {
+  "db": Object {
+    "default": Object {
+      "database": "todo",
+      "host": "localhost",
+      "password": "",
+      "port": 5432,
+      "synchronize": true,
+      "type": "postgres",
+      "username": "root",
+    },
+  },
+  "logLevel": "info",
+  "publicConfig": Object {
+    "graphqlEndpoint": "http://localhost:3000/graphql",
+  },
+}
+`;

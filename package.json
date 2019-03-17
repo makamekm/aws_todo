@@ -1,0 +1,105 @@
+{
+  "name": "aws_todo",
+  "version": "0.0.1",
+  "description": "Serverless Todo Application",
+  "private": true,
+  "repository": "github:pro_coders/makamekm/aws_todo",
+  "keywords": [
+    "serverless",
+    "react",
+    "typescript",
+    "jest",
+    "tslint",
+    "todo"
+  ],
+  "bin": {
+    "collect-service": "./collectServerless.js"
+  },
+  "scripts": {
+    "clean": "rm -rf dist",
+    "dist": "run-p dist:client dist:server",
+    "dist:client": "node ./fuse.js",
+    "dist:server": "tsc",
+    "dev": "run-p dev:client",
+    "dev:client": "node ./fuse.dev.js",
+    "collect:service": "node ./collectServerless.js",
+    "package": "run-s collect:service package:run",
+    "package:run": "serverless package",
+    "deploy": "run-s collect:service deploy:run",
+    "deploy:run": "serverless deploy",
+    "offline": "run-s collect:service offline:run",
+    "offline:run": "run-p dev offline:server",
+    "offline:server": "serverless offline",
+    "test": "jest --forceExit --detectOpenHandles --collect-coverage"
+  },
+  "author": {
+    "name": "Karpov Maxim",
+    "email": "makame@mail.ru"
+  },
+  "license": "GNU",
+  "devDependencies": {
+    "@types/jest": "24.0.11",
+    "@types/react": "16.8.7",
+    "@types/react-dom": "16.8.2",
+    "awesome-typescript-loader": "5.2.1",
+    "fuse-box": "3.7.1",
+    "glob": "7.1.3",
+    "jest": "24.4.0",
+    "jest-runner-tslint": "1.0.5",
+    "js-yaml": "3.12.2",
+    "node-sass": "4.11.0",
+    "sass-loader": "7.1.0",
+    "serverless-offline": "4.9.0",
+    "style-loader": "0.23.1",
+    "ts-jest": "24.0.0",
+    "ts-loader": "5.3.3",
+    "tslint": "5.13.1",
+    "typescript": "3.3.3333",
+    "react-test-renderer": "16.8.4",
+    "react-testing-library": "^6.0.0"
+  },
+  "dependencies": {
+    "antd": "^3.15.0",
+    "apollo-server-lambda": "2.4.8",
+    "aws-lambda": "0.1.2",
+    "fs": "0.0.1-security",
+    "graphql-hooks": "^3.3.3",
+    "graphql-hooks-memcache": "^1.1.1",
+    "graphql-hooks-ssr": "^1.0.7",
+    "mime-types": "2.1.21",
+    "node-fetch": "^2.3.0",
+    "npm-run-all": "4.1.5",
+    "pg": "7.8.2",
+    "prop-types": "15.7.2",
+    "react": "16.8.4",
+    "react-apollo": "^2.5.2",
+    "react-apollo-hooks": "^0.4.3",
+    "react-dom": "16.8.4",
+    "react-helmet": "5.2.0",
+    "react-ioc": "^1.0.0",
+    "react-router-config": "4.4.0-beta.6",
+    "react-router-dom": "4.3.1",
+    "rxjs": "^6.4.0",
+    "rxjs-hooks": "^0.4.0",
+    "serialize-javascript": "1.6.1",
+    "serverless": "1.38.0",
+    "serverless-plugin-typescript": "1.1.5",
+    "styled-components": "4.1.3",
+    "tslib": "1.9.3",
+    "typegql": "0.6.1",
+    "typeorm": "0.2.14"
+  },
+  "jest": {
+    "projects": [
+      "./jest.tslint.json",
+      "./jest.test.json"
+    ],
+    "collectCoverage": false,
+    "coverageDirectory": "coverage",
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!**/*.test.{ts,tsx}",
+      "!**/*.d.{ts,tsx}"
+    ]
+  }
+}

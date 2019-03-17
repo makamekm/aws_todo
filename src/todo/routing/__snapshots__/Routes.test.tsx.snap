@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Todo Routing should match snapshot 1`] = `
+Array [
+  Object {
+    "component": [Function],
+    "exact": true,
+    "path": "/",
+  },
+  Object {
+    "component": [Function],
+    "path": "/index",
+  },
+]
+`;

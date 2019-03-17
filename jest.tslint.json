@@ -1,0 +1,22 @@
+{
+    "displayName": "lint",
+    "runner": "jest-runner-tslint",
+    "testMatch": [
+        "<rootDir>/src/**/*.{ts,tsx}"
+    ],
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json"
+    ],
+    "testPathIgnorePatterns": [
+        "/node_modules/",
+        "/dist/",
+        "/.build/",
+        "/.fusebox/",
+        "/coverage/",
+        "/public/"
+    ]
+}

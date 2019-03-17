@@ -1,0 +1,40 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "esnext",
+      "dom",
+      "esnext.asynciterable"
+    ],
+    "importHelpers": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "stripInternal": true,
+    "skipLibCheck": true,
+    "noLib": false,
+    "declaration": false,
+    "baseUrl": "./src",
+    "outDir": "./dist",
+    "types": ["node", "jest"],
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowJs": true
+  },
+  "compileOnSave": false,
+  "suppressImplicitAnyIndexErrors": true,
+  "exclude": [
+    "node_modules",
+    ".fusebox",
+    ".build",
+    "coverage",
+    "public",
+    "dist"
+  ]
+}

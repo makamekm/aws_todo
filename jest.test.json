@@ -1,0 +1,29 @@
+{
+    "rootDir": "./",
+    "displayName": "test",
+    "transform": {
+        ".+\\.(ts?|tsx?)$": "ts-jest"
+    },
+    "testURL": "http://localhost",
+    "testMatch": [
+        "<rootDir>/src/**/*.test.{ts,tsx}"
+    ],
+    "verbose": true,
+    "automock": false,
+    "testEnvironment": "jsdom",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json"
+    ],
+    "testPathIgnorePatterns": [
+        "/node_modules/",
+        "/dist/",
+        "/.build/",
+        "/.fusebox/",
+        "/coverage/",
+        "/public/"
+    ]
+}

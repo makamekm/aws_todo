@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Server Render Application should call render 1`] = `
+<html
+  lang="en"
+>
+  <head>
+    <meta
+      content="width=device-width, initial-scale=1"
+      name="viewport"
+    />
+    base
+    title
+    meta
+    link
+    base
+    styles
+  </head>
+  <body>
+    <main
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "markup",
+        }
+      }
+      id="app"
+    />
+    <script
+      charSet="UTF-8"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "window.__STORE_STATE__={\\"test\\":\\"store\\"};",
+        }
+      }
+    />
+    <script
+      charSet="UTF-8"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "window.__APOLLO_STATE__={\\"test\\":\\"state\\"};",
+        }
+      }
+    />
+    <script
+      src="/public/index.js"
+    />
+  </body>
+</html>
+`;

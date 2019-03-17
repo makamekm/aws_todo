@@ -1,0 +1,11 @@
+@import "~antd/dist/antd";
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.layout-content {
+    flex: 1;
+}

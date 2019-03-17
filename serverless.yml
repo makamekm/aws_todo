@@ -1,0 +1,62 @@
+service: serverless-example
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+custom:
+  serverless-offline:
+    host: 0.0.0.0
+    port: 3000
+package:
+  include:
+    - package.json
+    - node_modules/**
+    - dist/**
+    - src/**
+    - public/**
+  exclude:
+    - ./**
+provider:
+  name: aws
+  runtime: nodejs8.10
+  memorySize: 256
+  timeout: 3
+  stackTags:
+    SERVICE: '${{self:service}}'
+    STAGE: '${{self:provider.stage}}'
+    REGION: '${{self:provider.region}}'
+    VERSION: '${{file(./package.json):version}}'
+functions:
+  ping:
+    description: Ping the service
+    handler: src/server/index.ping
+    events:
+      - http:
+          path: ping
+          method: get
+  static:
+    handler: src/server/index.staticFile
+    events:
+      - http:
+          path: '/public/{proxy+}'
+          method: get
+  application:
+    description: React Isomorphic Application
+    handler: src/server/index.application
+    warmup: true
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: '/{proxy+}'
+          method: get
+  graphql:
+    description: GraphQL Interface
+    handler: src/graphql/index.handler
+    events:
+      - http:
+          path: /graphql
+          method: post
+      - http:
+          path: /graphql
+          method: get
