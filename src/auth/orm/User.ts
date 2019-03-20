@@ -1,36 +1,48 @@
 import * as TypeQL from "typegql";
 import { ORMRegistry, TypeORM } from "../../orm";
 
-@ORMRegistry.RegisterEntity("TodoModel")
-@TypeORM.Entity("todo")
+export enum UserProvider {
+    Google = 0,
+}
+
+@ORMRegistry.RegisterEntity("SessionModel")
+@TypeORM.Entity("session")
 @TypeQL.ObjectType()
-export class TodoModel {
+export class UserModel {
     @TypeORM.PrimaryGeneratedColumn()
     @TypeQL.Field()
     public id: number;
 
     @TypeORM.Column({
         length: 100,
-        nullable: true,
+        nullable: false,
     })
-    @TypeORM.Index("todo-user-id-idx")
+    @TypeORM.Index("user-google-id-idx")
     @TypeQL.Field()
-    public userId: string;
+    public googleId: string;
 
     @TypeORM.Column({
         length: 100,
         nullable: false,
     })
-    @TypeORM.Index("todo-name-idx")
+    @TypeORM.Index("user-name-idx")
     @TypeQL.Field()
     public name: string;
 
     @TypeORM.Column({
+        length: 100,
         nullable: false,
     })
-    @TypeORM.Index("todo-is-done-idx")
     @TypeQL.Field()
-    public isDone: boolean;
+    public avatar: string;
+
+    @TypeORM.Column({
+        length: 100,
+        nullable: false,
+    })
+    @TypeORM.Index("user-provider-idx")
+    @TypeQL.Field()
+    public type: UserProvider;
 
     @TypeORM.CreateDateColumn()
     @TypeQL.Field({ type: String })

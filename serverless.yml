@@ -60,3 +60,27 @@ functions:
       - http:
           path: /graphql
           method: get
+  google_callback:
+    description: Google Auth 2.0 Callback
+    handler: src/auth/index.google_callback
+    warmup: true
+    events:
+      - http:
+          path: /auth/google/callback
+          method: post
+  auth_google:
+    description: Google Auth 2.0 Login
+    handler: src/auth/index.auth_google
+    warmup: true
+    events:
+      - http:
+          path: '/auth/google/{any+}'
+          method: ANY
+  auth_development:
+    description: Google Auth 2.0 Login
+    handler: src/auth/index.auth_development
+    warmup: true
+    events:
+      - http:
+          path: '/auth/development/{any+}'
+          method: ANY
