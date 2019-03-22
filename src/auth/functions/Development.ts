@@ -13,6 +13,7 @@ server.post("/auth/development/login",
     passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/login",
+        session: true,
     }),
 );
 

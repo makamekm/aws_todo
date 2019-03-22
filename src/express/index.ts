@@ -13,6 +13,8 @@ passport.use(new LocalStrategy(
         passwordField: "password",
     },
     (username, password, done) => {
+        console.log("hello!", username, password);
+
         done(null, {
             id: "test",
         });
@@ -34,15 +36,11 @@ passport.use(new GoogleStrategy({
 const app = express();
 
 passport.serializeUser((user, done) => {
-    console.log(user);
-    done(null, user.id);
+    done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-    console.log(id);
-    done(null, {
-        id,
-    });
+passport.deserializeUser((user, done) => {
+    done(null, user);
 });
 
 app.use(bodyParser.json());
