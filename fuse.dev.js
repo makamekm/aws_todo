@@ -1,4 +1,4 @@
-const { FuseBox, SassPlugin, CSSPlugin, CSSResourcePlugin } = require("fuse-box");
+const { FuseBox, SassPlugin, CSSPlugin, PostCSSPlugin, CSSResourcePlugin } = require("fuse-box");
 
 const typescriptRunner = FuseBox
     .init({
@@ -43,6 +43,9 @@ const stylesheetRunner = FuseBox
                 CSSResourcePlugin({
                     inline: true,
                 }),
+                PostCSSPlugin([
+                    require("postcss-clean")(),
+                ]),
                 CSSPlugin({
                     inject: false,
                     group: "index.css",

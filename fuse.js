@@ -44,6 +44,9 @@ const stylesheetRunner = FuseBox
                 CSSResourcePlugin({
                     inline: true,
                 }),
+                PostCSSPlugin([
+                    require("postcss-clean")(),
+                ]),
                 CSSPlugin({
                     inject: false,
                     group: "index.css",
