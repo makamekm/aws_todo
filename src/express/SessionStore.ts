@@ -1,6 +1,6 @@
 import { Store } from "express-session";
 import { from } from "rxjs";
-import { switchMap, tap } from "rxjs/operators";
+import { map, switchMap, tap } from "rxjs/operators";
 import { SessionModel } from "../auth/orm/Session";
 import { executeDB } from "../orm";
 
@@ -24,8 +24,23 @@ export class SessionStore extends Store {
 
     public async set(sid, sess, fn) {
         await executeDB(
-            (connection) => from([new SessionModel()])
+            (connection) => from(
+                connection
+                    .getRepository(SessionModel)
+                    .findOne({
+                        where: {
+                            sid,
+                        },
+                    }),
+            )
             .pipe(
+                map((session) => {
+                    if (!session) {
+                        return new SessionModel();
+                    } else {
+                        return session;
+                    }
+                }),
                 tap(
                     (session) => {
                         session.sid = sid;

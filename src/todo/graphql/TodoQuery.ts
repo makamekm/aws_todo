@@ -6,7 +6,9 @@ import { TodoModel } from "../orm/Todo";
 @TypeQL.ObjectType()
 export class TodoQuery {
     @TypeQL.Field({ type: [TodoModel] })
-    public async list(): Promise<TodoModel[]> {
+    public async list(@TypeQL.Context context): Promise<TodoModel[]> {
+        console.log(context.user);
+
         return await executeDB(
             (connection) => from(
                 connection

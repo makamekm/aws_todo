@@ -1,11 +1,4 @@
-import {
-    APIGatewayEventRequestContext,
-    APIGatewayProxyEvent,
-    APIGatewayProxyResult,
-} from "aws-lambda";
-import * as serverless from "serverless-http";
-import * as TypeQL from "typegql";
-import { server } from "../../express";
+import { runHandler, server } from "../../express";
 import {serverSideRendering} from "../render/ServerSideRendering";
 
 server.use("*",
@@ -14,33 +7,14 @@ server.use("*",
         const user = req.user;
         const url = req.url;
 
-        // console.log(url, headers, user);
-        // res.send("hello");
         try {
             const body = await serverSideRendering(url, headers, user);
-            console.log(url, headers, user);
             res.send(body);
         } catch (error) {
-            console.error(error);
+            // console.error(error);
             res.send(error.message);
         }
     },
 );
 
-export const application = (serverless as any)(server);
-
-// export async function application(
-//     event: APIGatewayProxyEvent,
-//     context: APIGatewayEventRequestContext,
-//     callback,
-//     _serverSideRendering = serverSideRendering,
-// ): Promise<APIGatewayProxyResult> {
-//     const body = await _serverSideRendering(event.path);
-//     return {
-//         body,
-//         headers: {
-//             "content-type": "text/html; charset=utf-8",
-//         },
-//         statusCode: 200,
-//     };
-// }
+export const application = runHandler();

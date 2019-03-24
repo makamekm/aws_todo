@@ -32,6 +32,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
   const store: StoreService = {
     config,
     user,
+    isDev: process.env.IS_OFFLINE === "true",
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(

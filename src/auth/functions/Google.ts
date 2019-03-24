@@ -1,6 +1,5 @@
 import * as passport from "passport";
-import * as serverless from "serverless-http";
-import { server } from "../../express";
+import { runHandler, server } from "../../express";
 
 server.post("/auth/google/login",
   passport.authenticate("google", {
@@ -10,4 +9,4 @@ server.post("/auth/google/login",
   }),
 );
 
-export const auth_google = (serverless as any)(server);
+export const auth_google = runHandler();

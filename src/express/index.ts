@@ -3,50 +3,19 @@ import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as session from "express-session";
 import * as passport from "passport";
-import * as GoogleStrategy from "passport-google-oauth20";
-import * as LocalStrategy from "passport-local";
+import * as serverless from "serverless-http";
 import { SessionStore } from "./SessionStore";
 
-passport.use(new LocalStrategy(
-    {
-        usernameField: "username",
-        passwordField: "password",
-    },
-    (username, password, done) => {
-        console.log("hello!", username, password);
+import "./PassportSerializer";
+import "./PassportStrategy";
 
-        done(null, {
-            id: "test",
-        });
-    },
-));
+export const server = (express as any)();
+export const runHandler = () => (serverless as any)(server);
 
-passport.use(new GoogleStrategy({
-    clientID: "GOOGLE_CLIENT_ID",
-    clientSecret: "GOOGLE_CLIENT_SECRET",
-    callbackURL: "http://www.example.com/auth/google/callback",
-},
-    (accessToken, refreshToken, profile, done) => {
-        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        //   return done(err, user);
-        // });
-    },
-));
-
-const app = (express as any)();
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-    done(null, user);
-});
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(session({
+server.use(bodyParser.json());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(cookieParser());
+server.use(session({
     secret: "todo",
     cookie: {
         maxAge: 60000,
@@ -55,8 +24,5 @@ app.use(session({
     saveUninitialized: false,
     store: new SessionStore(),
 }));
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-export const server = app;
+server.use(passport.initialize());
+server.use(passport.session());
