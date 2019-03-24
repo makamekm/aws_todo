@@ -1,15 +1,18 @@
 import * as passport from "passport";
+import { from } from "rxjs";
 import * as serverless from "serverless-http";
+import { SessionModel } from "../../auth/orm/Session";
 import { server } from "../../express";
+import { executeDB } from "../../orm";
 
-server.get("/auth/development/logout",
+server.use("/auth/development/logout",
     (req, res) => {
         req.logout();
         res.redirect("/");
     },
 );
 
-server.post("/auth/development/login",
+server.use("/auth/development/login",
     passport.authenticate("local", {
         successRedirect: "/",
         failureRedirect: "/login",
@@ -17,4 +20,19 @@ server.post("/auth/development/login",
     }),
 );
 
-export const auth_development = serverless(server);
+server.use("/auth/development/test",
+    async (req, res, next) => {
+        const sessions = await executeDB(
+            (connection) => from(
+                connection.getRepository(SessionModel)
+                    .createQueryBuilder("equity")
+                    .orderBy("equity.date", "DESC")
+                    .getMany(),
+                ),
+        );
+
+        res.send(`HELLO! ${sessions.length} sessions are in active`);
+    },
+);
+
+export const auth_development = (serverless as any)(server);

@@ -1,15 +1,15 @@
 import { getConfig } from "../config";
-import { ORMLogger } from "./ORMLogger";
-import { ORMManager } from "./ORMManager";
-import { ORMRegistry } from "./ORMRegistry";
+import { DBConnection } from "./DBConnection";
+import { DBRegistry } from "./DBRegistry";
+import { DBLogger } from "./DBLogger";
 
-export function initializeORMScope(scope: string = "default"): ORMManager {
+export function initializeDBConnection(scope: string = "default"): DBConnection {
     const config = JSON.parse(JSON.stringify(getConfig().db[scope]));
     config.autoSchemaSync = false;
-    config.entities = ORMRegistry.getEntities(scope);
+    config.entities = DBRegistry.getEntities(scope);
     config.logging = "all";
-    config.logger = new ORMLogger();
-    return new ORMManager(scope, config);
+    config.logger = new DBLogger();
+    return new DBConnection(config);
 }
 
 export async function forEachConfigDBScopes(callback: (name: string) => Promise<void>) {

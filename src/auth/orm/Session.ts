@@ -1,11 +1,11 @@
-import { ORMRegistry, TypeORM } from "../../orm";
+import { DBRegistry, TypeORM } from "../../orm";
 import { UserModel } from "./User";
 
 export enum SessionProvider {
     Google = 0,
 }
 
-@ORMRegistry.RegisterEntity("SessionModel")
+@DBRegistry.RegisterEntity("SessionModel")
 @TypeORM.Entity("session")
 export class SessionModel {
     @TypeORM.PrimaryGeneratedColumn()

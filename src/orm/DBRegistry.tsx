@@ -1,4 +1,4 @@
-export class ORMRegistry {
+export class DBRegistry {
     public static cleanEntities() {
         this.entities = {};
     }

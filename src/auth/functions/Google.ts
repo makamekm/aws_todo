@@ -10,4 +10,4 @@ server.post("/auth/google/login",
   }),
 );
 
-export const auth_google = serverless(server);
+export const auth_google = (serverless as any)(server);

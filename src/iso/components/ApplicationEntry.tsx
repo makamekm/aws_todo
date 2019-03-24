@@ -36,7 +36,7 @@ export class ApplicationEntry extends React.PureComponent<IApplicationEntryProps
             {content}
           </BrowserRouter>
         ) : (
-          <StaticRouter location={location}>
+          <StaticRouter location={location} context={{}}>
             {content}
           </StaticRouter>
         )}

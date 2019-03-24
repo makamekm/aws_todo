@@ -1,11 +1,11 @@
-import { ORMManager } from "./ORMManager";
-import { forEachConfigDBScopes, initializeORMScope } from "./Utils";
+import { DBConnection } from "./DBConnection";
+import { forEachConfigDBScopes, initializeDBConnection as initializeDBConnection } from "./Utils";
 
 describe("Orm", () => {
     describe("Utils", () => {
         it("should initializeORMScope return ORMManager", () => {
-            const manager = initializeORMScope();
-            expect(manager).toBeInstanceOf(ORMManager);
+            const manager = initializeDBConnection();
+            expect(manager).toBeInstanceOf(DBConnection);
         });
 
         it("should forEachConfigDBScopes call callback", () => {

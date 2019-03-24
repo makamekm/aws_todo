@@ -1,38 +1,62 @@
-const { FuseBox, SassPlugin, CSSPlugin, CSSResourcePlugin, QuantumPlugin } = require("fuse-box");
-const fuse = FuseBox.init({
-    homeDir: "./src",
-    target: "browser@es5",
-    output: "public/$name.js",
-    plugins: [
-        [
-            SassPlugin({
-                outputStyle: "compressed",
-            }),
-            CSSResourcePlugin({
-                dist: "public/css-resources",
-                resolve: f => `/public/css-resources/${f}`,
-            }),
-            CSSPlugin({
-                outFile: (file, relativeRoute) => {
-                    return `public/${relativeRoute}/${file}`;
-                },
+const { FuseBox, SassPlugin, CSSPlugin, CSSResourcePlugin, PostCSSPlugin, QuantumPlugin } = require("fuse-box");
+
+const typescriptRunner = FuseBox
+    .init({
+        homeDir: "./src",
+        target: "browser@es5",
+        sourceMaps: false,
+        output: "public/$name.js",
+        plugins: [
+            QuantumPlugin({
+                bakeApiIntoBundle: true,
             }),
         ],
-        QuantumPlugin({
-            target: "browser",
-            bakeApiIntoBundle: "index",
-            uglify: true,
-            containedAPI: true,
-            polyfills: ["Promise"],
-            css: { clean: true },
-            extendServerImport: true,
-        }),
-    ],
-    useTypescriptCompiler: true,
-});
+        useTypescriptCompiler: true,
+    });
 
-fuse
+typescriptRunner
     .bundle("index")
     .instructions("> client/index.ts");
 
-fuse.run();
+typescriptRunner
+    .run();
+
+const stylesheetRunner = FuseBox
+    .init({
+        homeDir: "./src",
+        target: "browser@es5",
+        sourceMaps: false,
+        output: "public/$name.js",
+        writeBundles: false,
+        plugins: [
+            [
+                /.+\.(css|scss|sass)/,
+                SassPlugin({
+                    importer: true,
+                    includePaths: [
+                        "./node_modules/",
+                    ],
+                    omitSourceMapUrl: false,
+                    outFile: "",
+                    sourceMap: false,
+                    sourceComments: false,
+                }),
+                CSSResourcePlugin({
+                    inline: true,
+                }),
+                CSSPlugin({
+                    inject: false,
+                    group: "index.css",
+                    outFile: "public/index.css",
+                    minify: true,
+                }),
+            ],
+        ],
+    });
+
+stylesheetRunner
+    .bundle("stylesheet")
+    .instructions("> **/*.entry.{scss,css,sass}");
+
+stylesheetRunner
+    .run();

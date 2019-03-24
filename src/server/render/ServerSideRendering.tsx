@@ -16,7 +16,7 @@ import { StoreService } from "../../iso/services/StoreService";
 import { getRoutes } from "../../main/routing";
 import { Html } from "./Html";
 
-export const serverSideRendering = async (event: APIGatewayProxyEvent) => {
+export const serverSideRendering = async (url: string, headers, user) => {
   const config = JSON.parse(
     JSON.stringify(
       getConfig().publicConfig,
@@ -26,10 +26,12 @@ export const serverSideRendering = async (event: APIGatewayProxyEvent) => {
     url: config.graphqlEndpoint,
     cache: memCache(),
     fetch,
+    headers,
   });
   const sheet = new ServerStyleSheet();
   const store: StoreService = {
     config,
+    user,
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(
@@ -37,7 +39,7 @@ export const serverSideRendering = async (event: APIGatewayProxyEvent) => {
       store={store}
       client={client}
       type="server"
-      location={event.path}>
+      location={url}>
       {routes}
     </ApplicationEntry>,
   );

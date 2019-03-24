@@ -4,7 +4,9 @@ const typescriptRunner = FuseBox
     .init({
         homeDir: "./src",
         target: "browser@es5",
-        sourceMaps: true,
+        sourceMaps: {
+            inline: true,
+        },
         output: "public/$name.js",
         plugins: [],
         useTypescriptCompiler: true,
@@ -33,20 +35,18 @@ const stylesheetRunner = FuseBox
                     includePaths: [
                         "./node_modules/",
                     ],
-                    sourceMap: null,
-                    sourceMaps: null,
+                    omitSourceMapUrl: false,
                     outFile: "",
+                    sourceMap: false,
+                    sourceComments: false,
                 }),
                 CSSResourcePlugin({
                     inline: true,
-                    sourceMap: false,
-                    sourceMaps: false,
                 }),
                 CSSPlugin({
+                    inject: false,
                     group: "index.css",
                     outFile: "public/index.css",
-                    sourceMap: false,
-                    sourceMaps: false,
                 }),
             ],
         ],

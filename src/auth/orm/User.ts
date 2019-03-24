@@ -1,11 +1,11 @@
 import * as TypeQL from "typegql";
-import { ORMRegistry, TypeORM } from "../../orm";
+import { DBRegistry, TypeORM } from "../../orm";
 
 export enum UserProvider {
     Google = 0,
 }
 
-@ORMRegistry.RegisterEntity("SessionModel")
+@DBRegistry.RegisterEntity("SessionModel")
 @TypeORM.Entity("session")
 @TypeQL.ObjectType()
 export class UserModel {

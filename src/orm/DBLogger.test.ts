@@ -1,4 +1,4 @@
-import { ORMLogger } from "./ORMLogger";
+import { DBLogger } from "./DBLogger";
 
 describe("Orm", () => {
     describe("ORMLogger", () => {
@@ -8,7 +8,7 @@ describe("Orm", () => {
 
         it("should logMigration", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 info: spy,
             });
@@ -18,7 +18,7 @@ describe("Orm", () => {
 
         it("should logQuery", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 debug: spy,
             });
@@ -28,7 +28,7 @@ describe("Orm", () => {
 
         it("should logQueryError", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 error: spy,
             });
@@ -38,7 +38,7 @@ describe("Orm", () => {
 
         it("should logQuerySlow", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 error: spy,
             });
@@ -48,7 +48,7 @@ describe("Orm", () => {
 
         it("should logSchemaBuild", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 info: spy,
             });
@@ -58,7 +58,7 @@ describe("Orm", () => {
 
         it("should log", () => {
             const spy = jest.fn();
-            const logger = new ORMLogger();
+            const logger = new DBLogger();
             logger.setLog(<any> {
                 log: spy,
             });

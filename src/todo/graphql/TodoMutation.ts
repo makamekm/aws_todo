@@ -1,6 +1,8 @@
 import { GraphQLID } from "graphql/type";
+import { from } from "rxjs";
+import { switchMap, tap } from "rxjs/operators";
 import * as TypeQL from "typegql";
-import { GetManager } from "../../orm";
+import { executeDB } from "../../orm";
 import { TodoModel } from "../orm/Todo";
 
 @TypeQL.ObjectType()
@@ -11,32 +13,48 @@ export class TodoMutation {
             throw Error("Name should be more than 3 chars");
         }
 
-        const manager = GetManager();
-        const connection = await manager.connect();
-        const repository = connection.getRepository(TodoModel);
-
-        const todo = new TodoModel();
-        todo.name = name;
-        todo.isDone = false;
-        todo.date = new Date();
-
-        await repository.save(todo);
-        return todo;
+        return await executeDB(
+            (connection) => from(
+                [new TodoModel()],
+            )
+            .pipe(
+                tap(
+                    (todo) => {
+                        todo.name = name;
+                        todo.isDone = false;
+                        todo.date = new Date();
+                    },
+                ),
+                switchMap(
+                    (todo) => connection
+                        .getRepository(TodoModel)
+                        .save(todo),
+                ),
+            ),
+        );
     }
 
     @TypeQL.Field({ type: TodoModel })
     public async toggle(@TypeQL.Arg({ type: GraphQLID }) id: number): Promise<TodoModel> {
-        const manager = GetManager();
-        const connection = await manager.connect();
-        const repository = connection.getRepository(TodoModel);
-
-        const todo = await repository.findOne({
-            id,
-        });
-        todo.isDone = !todo.isDone;
-
-        await repository.save(todo);
-        return todo;
+        return await executeDB(
+            (connection) => from(
+                connection
+                    .getRepository(TodoModel)
+                    .findOne({
+                        id,
+                    }),
+            )
+            .pipe(
+                tap(
+                    (todo) => todo.isDone = !todo.isDone,
+                ),
+                switchMap(
+                    (todo) => connection
+                        .getRepository(TodoModel)
+                        .save(todo),
+                ),
+            ),
+        );
     }
 
     @TypeQL.Field({ type: TodoModel })
@@ -45,30 +63,44 @@ export class TodoMutation {
             throw Error("Name should be more than 3 chars");
         }
 
-        const manager = GetManager();
-        const connection = await manager.connect();
-        const repository = connection.getRepository(TodoModel);
-
-        const todo = await repository.findOne({
-            id,
-        });
-        todo.name = name;
-
-        await repository.save(todo);
-        return todo;
+        return await executeDB(
+            (connection) => from(
+                connection
+                    .getRepository(TodoModel)
+                    .findOne({
+                        id,
+                    }),
+            )
+            .pipe(
+                tap(
+                    (todo) => todo.name = name,
+                ),
+                switchMap(
+                    (todo) => connection
+                        .getRepository(TodoModel)
+                        .save(todo),
+                ),
+            ),
+        );
     }
 
     @TypeQL.Field({ type: TodoModel })
     public async delete(@TypeQL.Arg({ type: GraphQLID }) id: number): Promise<TodoModel> {
-        const manager = GetManager();
-        const connection = await manager.connect();
-        const repository = connection.getRepository(TodoModel);
-
-        const todo = await repository.findOne({
-            id,
-        });
-
-        await repository.remove(todo);
-        return todo;
+        return await executeDB(
+            (connection) => from(
+                connection
+                    .getRepository(TodoModel)
+                    .findOne({
+                        id,
+                    }),
+            )
+            .pipe(
+                switchMap(
+                    (todo) => connection
+                        .getRepository(TodoModel)
+                        .remove(todo),
+                ),
+            ),
+        );
     }
 }

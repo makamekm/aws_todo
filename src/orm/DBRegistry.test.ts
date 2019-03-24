@@ -1,22 +1,22 @@
-import { ORMRegistry } from "./ORMRegistry";
+import { DBRegistry } from "./DBRegistry";
 
 describe("Orm", () => {
     describe("ORMRegistry", () => {
         beforeEach(() => {
-            ORMRegistry.cleanEntities();
+            DBRegistry.cleanEntities();
         });
 
         it("should RegisterEntity", async () => {
             const spy = {};
-            ORMRegistry.RegisterEntity("test")(spy);
-            const expected = ORMRegistry.getEntities()[0];
+            DBRegistry.RegisterEntity("test")(spy);
+            const expected = DBRegistry.getEntities()[0];
             expect(expected).toMatchObject(spy);
         });
 
         it("should addEntity", async () => {
             const spy = {};
-            ORMRegistry.addEntity("test", "default", spy);
-            const expected = ORMRegistry.getEntities()[0];
+            DBRegistry.addEntity("test", "default", spy);
+            const expected = DBRegistry.getEntities()[0];
             expect(expected).toMatchObject(spy);
         });
     });

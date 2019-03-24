@@ -20,12 +20,13 @@
     "baseUrl": "./src",
     "outDir": "./dist",
     "types": ["node", "jest"],
-    "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "inlineSourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowJs": true
+    "allowJs": true,
+    "allowSyntheticDefaultImports": false,
+    "esModuleInterop": false
   },
   "compileOnSave": false,
   "suppressImplicitAnyIndexErrors": true,

@@ -1,6 +1,6 @@
 import * as MockedManager from "../orm";
 
-const defaultGetManager = MockedManager.GetManager;
+const defaultGetManager = MockedManager.getDB;
 
 export const restoreGetManager = () => {
     (MockedManager as any).GetManager = defaultGetManager;

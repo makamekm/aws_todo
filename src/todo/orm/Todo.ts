@@ -1,7 +1,7 @@
 import * as TypeQL from "typegql";
-import { ORMRegistry, TypeORM } from "../../orm";
+import { DBRegistry, TypeORM } from "../../orm";
 
-@ORMRegistry.RegisterEntity("TodoModel")
+@DBRegistry.RegisterEntity("TodoModel")
 @TypeORM.Entity("todo")
 @TypeQL.ObjectType()
 export class TodoModel {

@@ -4,7 +4,7 @@ import * as Log from "../log";
 
 const LOG_TYPE = "typeorm";
 
-export class ORMLogger implements TypeORM.Logger {
+export class DBLogger implements TypeORM.Logger {
     private _Log = Log;
 
     public setLog(_Log = Log) {

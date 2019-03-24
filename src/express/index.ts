@@ -33,7 +33,7 @@ passport.use(new GoogleStrategy({
     },
 ));
 
-const app = express();
+const app = (express as any)();
 
 passport.serializeUser((user, done) => {
     done(null, user);
