@@ -6,7 +6,7 @@
             "use": "@now/static"
         },
         {
-            "src": "./src/**/*.ts",
+            "src": "./src/entry/*.ts",
             "use": "@now/node-server"
         }
     ],
@@ -15,8 +15,8 @@
     },
     "routes": [
         { "src": "/public/(.*)", "dest": "/public/$1" },
-        { "src": "/graphql/(.*)", "dest": "/src/graphql/index" },
-        { "src": "/auth/(.*)", "dest": "/src/auth/index" },
-        { "src": "/(.*)", "dest": "/src/graphql/index" }
+        { "src": "/graphql/(.*)", "dest": "/src/entry/graphql" },
+        { "src": "/auth/(.*)", "dest": "/src/entry/auth" },
+        { "src": "/(.*)", "dest": "/src/entry/graphql" }
     ]
 }
