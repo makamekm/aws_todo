@@ -1,5 +1,5 @@
 import * as TypeQL from "typegql";
-import { DBRegistry, TypeORM } from "../../orm";
+import { DBRegistry, TypeORM } from "../../../orm";
 
 export enum UserProvider {
     Google = 0,
