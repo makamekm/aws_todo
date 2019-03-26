@@ -18,7 +18,7 @@ export class SessionStore extends Store {
             ),
         );
 
-        const sess = JSON.parse(session.data);
+        const sess = session && JSON.parse(session.data);
         return fn(null, sess);
     }
 
