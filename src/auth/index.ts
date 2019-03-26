@@ -1,2 +1,6 @@
-export * from "./functions/Google";
-export * from "./functions/Development";
+import { server } from "../express";
+
+import "./Development";
+import "./Google";
+
+export default server;

@@ -1,5 +1,5 @@
 import { GraphQLID } from "graphql/type";
-import { from } from "rxjs";
+import { from, empty, of } from "rxjs";
 import { switchMap, tap } from "rxjs/operators";
 import * as TypeQL from "typegql";
 import { executeDB } from "../../orm";
@@ -12,6 +12,13 @@ export class TodoMutation {
         if (name.length < 3) {
             throw Error("Name should be more than 3 chars");
         }
+
+        // of({
+        //     name,
+        // })
+        // .pipe(
+
+        // );
 
         return await executeDB(
             (connection) => from(

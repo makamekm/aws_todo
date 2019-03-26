@@ -1,6 +1,3 @@
-import {
-  APIGatewayProxyEvent,
-} from "aws-lambda";
 import { GraphQLClient } from "graphql-hooks";
 import * as memCache from "graphql-hooks-memcache";
 import { getInitialState } from "graphql-hooks-ssr";
