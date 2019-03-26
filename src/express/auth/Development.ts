@@ -1,10 +1,10 @@
 import * as passport from "passport";
 import { from } from "rxjs";
+import { server } from "../";
+import { executeDB } from "../../orm";
 import { SessionModel } from "../auth/orm/Session";
-import { server } from "../express";
-import { executeDB } from "../orm";
 
-if (process.env.IS_OFFLINE) {
+if (!process.env.NOW) {
     server.use("/auth/development/logout",
         (req, res) => {
             req.logout();

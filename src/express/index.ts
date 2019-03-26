@@ -24,3 +24,8 @@ server.use(session({
 }));
 server.use(passport.initialize());
 server.use(passport.session());
+
+import "./auth/Development";
+import "./auth/Google";
+
+import "./GraphQL";

@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
 import * as TypeQL from "typegql";
-import { server } from "../express";
+import { server } from ".";
 import { getSchemas } from "../main/graphql";
 
 const schema = TypeQL.compileSchema({
@@ -17,6 +17,4 @@ const serverQl = new ApolloServer({
     tracing: true,
 });
 
-serverQl.applyMiddleware({ app: server });
-
-export default server;
+serverQl.applyMiddleware({ app: server, path: "/graphql" });

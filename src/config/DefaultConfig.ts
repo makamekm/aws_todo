@@ -5,17 +5,17 @@ const config: IConfigScope = {
     logLevel: "info",
     db: {
       default: {
-        database: "todo",
-        host: "localhost",
-        password: "",
-        port: 5432,
-        type: "postgres",
-        username: "root",
+        database: process.env.DB_DATABASE || "todo",
+        host: process.env.DB_HOSTNAME || "localhost",
+        password: process.env.DB_PASSWORD || "",
+        port: (process.env as any).DB_PORT || 5432,
+        type: (process.env as any).DB_TYPE || "postgres",
+        username: process.env.DB_USERNAME || "root",
         synchronize: true,
       },
     },
     publicConfig: {
-      graphqlEndpoint: "http://localhost:3000/graphql",
+      graphqlEndpoint: `${process.env.NOW_URL || "http://localhost:3000"}/graphql`,
     },
   },
 };

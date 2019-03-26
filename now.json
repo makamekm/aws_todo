@@ -2,21 +2,23 @@
     "version": 2,
     "builds": [
         {
-            "src": "/public/*",
-            "use": "@now/static"
+            "src": "package.json",
+            "use": "@now/static-build",
+            "config": {
+                "distDir": "public"
+            }
         },
         {
             "src": "./src/entry/*.ts",
-            "use": "@now/node-server"
+            "use": "@now/node"
         }
     ],
     "env": {
-        "IS_PROD": "false"
+        "GOOGLE_CLIENT_ID": "@google-client-id",
+        "GOOGLE_CLIENT_SECRET": "@google-client-secret"
     },
     "routes": [
-        { "src": "/public/(.*)", "dest": "/public/$1" },
-        { "src": "/graphql/(.*)", "dest": "/src/entry/graphql" },
-        { "src": "/auth/(.*)", "dest": "/src/entry/auth" },
-        { "src": "/(.*)", "dest": "/src/entry/graphql" }
+        { "src": "/public/(.*)", "dest": "/$1" },
+        { "src": "/.*", "dest": "/src/entry/application.ts" }
     ]
 }
