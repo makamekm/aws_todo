@@ -1,8 +1,7 @@
 import { useMutation, useQuery } from "graphql-hooks";
 import * as React from "react";
-import { inject } from "react-ioc";
 import { BehaviorSubject, from, Subject } from "rxjs";
-import { map, mergeMap, tap, toArray } from "rxjs/operators";
+import { map, tap, toArray } from "rxjs/operators";
 
 export const QUERY_TODO_LIST = `{
     todoQuery {

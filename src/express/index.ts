@@ -16,7 +16,7 @@ server.use(cookieParser());
 server.use(session({
     secret: "todo",
     cookie: {
-        maxAge: 60000,
+        maxAge: 1000 * 60 * 60 * 24 * 14,
     },
     resave: false,
     saveUninitialized: false,

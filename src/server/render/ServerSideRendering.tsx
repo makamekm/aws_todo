@@ -19,6 +19,16 @@ export const serverSideRendering = async (url: string, headers, user) => {
       getConfig().publicConfig,
     ),
   );
+  console.log(headers);
+  const baseUrl = headers.host;
+  if (baseUrl) {
+    config.graphqlEndpoint = `http://${baseUrl}/graphql`;
+  }
+  const nowBaseUrl = headers["x-now-deployment-url"];
+  if (nowBaseUrl) {
+    const nowProto = headers["x-forwarded-proto"];
+    config.graphqlEndpoint = `${nowProto}://${nowBaseUrl}/graphql`;
+  }
   const client = new GraphQLClient({
     url: config.graphqlEndpoint,
     cache: memCache(),
@@ -29,7 +39,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
   const store: StoreService = {
     config,
     user,
-    isDev: !process.env.NOW,
+    isDev: !nowBaseUrl,
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(

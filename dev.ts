@@ -7,6 +7,6 @@ server.use("/public", (express as any).static(path.resolve("./public")));
 
 reload(server);
 
-import "./src/entry/application";
+import "./src/server";
 
 server.listen(3000);
