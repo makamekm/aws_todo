@@ -28,6 +28,9 @@ ReactDOM.hydrate(
     </ApplicationEntry>
   ),
   document.getElementById("app"),
+  () => {
+    store.isLoading = false;
+  },
 );
 
 // If you want to declare a service worker

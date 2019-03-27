@@ -39,6 +39,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
     config,
     user,
     isDev: !process.env.IS_CLOUD,
+    // isLoading: true,
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(
