@@ -12,6 +12,16 @@ const routes = [
                 exact: true,
             },
             {
+                component: Home,
+                path: "/day",
+                exact: true,
+            },
+            {
+                component: Home,
+                path: "/day/:date",
+                exact: true,
+            },
+            {
                 component: CalendarPage,
                 path: "/calendar",
                 exact: true,
