@@ -51,6 +51,7 @@ export const Html = (
         {flowState}
         {apolloState}
         <script src={"/public/index.js"} key={"index.js"}/>
+        {store.isDev && <script src="/reload/reload.js"></script>}
       </body>
     </html>
   );

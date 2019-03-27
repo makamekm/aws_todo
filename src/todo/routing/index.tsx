@@ -1,14 +1,22 @@
+import { AuthLayout } from "../../main/layouts/AuthLayout";
+import { CalendarPage } from "../pages/Calendar";
 import { Home } from "../pages/Home";
 
 const routes = [
     {
-        component: Home,
-        exact: true,
-        path: "/",
-    },
-    {
-        component: Home,
-        path: "/index",
+        component: AuthLayout,
+        routes: [
+            {
+                component: Home,
+                path: "/",
+                exact: true,
+            },
+            {
+                component: CalendarPage,
+                path: "/calendar",
+                exact: true,
+            },
+        ],
     },
 ];
 
