@@ -19,7 +19,6 @@ export const serverSideRendering = async (url: string, headers, user) => {
       getConfig().publicConfig,
     ),
   );
-  console.log(headers);
   const baseUrl = headers.host;
   if (baseUrl) {
     config.graphqlEndpoint = `http://${baseUrl}/graphql`;
@@ -39,7 +38,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
   const store: StoreService = {
     config,
     user,
-    isDev: !nowBaseUrl,
+    isDev: !process.env.IS_CLOUD,
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(

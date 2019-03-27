@@ -5,7 +5,7 @@ server.use("*",
     async (req, res, next) => {
         const headers = req.headers;
         const user = req.user;
-        const url = req.url;
+        const url = req.originalUrl;
 
         try {
             const body = await serverSideRendering(url, headers, user);

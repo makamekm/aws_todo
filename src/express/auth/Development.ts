@@ -4,7 +4,7 @@ import { server } from "../";
 import { executeDB } from "../../orm";
 import { SessionModel } from "../auth/orm/Session";
 
-if (!process.env.NOW) {
+if (!process.env.IS_CLOUD) {
     server.use("/auth/development/logout",
         (req, res) => {
             req.logout();
