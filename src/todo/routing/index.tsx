@@ -1,4 +1,4 @@
-import { AuthLayout } from "../../main/layouts/AuthLayout";
+import { AuthLayout } from "../../iso/layouts/AuthLayout";
 import { CalendarPage } from "../pages/Calendar";
 import { Home } from "../pages/Home";
 

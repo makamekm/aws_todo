@@ -3,7 +3,7 @@ import * as cookieParser from "cookie-parser";
 import * as express from "express";
 import * as session from "express-session";
 import * as passport from "passport";
-import { SessionStore } from "./SessionStore";
+import { SessionStore } from "./auth/SessionStore";
 
 import "./PassportSerializer";
 import "./PassportStrategy";

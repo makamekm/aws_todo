@@ -1,4 +1,4 @@
-import { server } from "../express";
+import { server } from "./express";
 import {serverSideRendering} from "./render/ServerSideRendering";
 
 server.use("*",

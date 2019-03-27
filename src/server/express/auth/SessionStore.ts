@@ -1,8 +1,8 @@
 import { Store } from "express-session";
 import { from } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
-import { executeDB } from "../orm";
-import { SessionModel } from "./auth/orm/Session";
+import { executeDB } from "../../../orm";
+import { SessionModel } from "./orm/Session";
 
 export class SessionStore extends Store {
     public async get(sid, fn) {

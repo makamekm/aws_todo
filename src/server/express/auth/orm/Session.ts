@@ -1,4 +1,4 @@
-import { DBRegistry, TypeORM } from "../../../orm";
+import { DBRegistry, TypeORM } from "../../../../orm";
 
 export enum SessionProvider {
     Google = 0,

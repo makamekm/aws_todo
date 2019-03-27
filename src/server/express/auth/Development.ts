@@ -1,7 +1,7 @@
 import * as passport from "passport";
 import { from } from "rxjs";
 import { server } from "../";
-import { executeDB } from "../../orm";
+import { executeDB } from "../../../orm";
 import { SessionModel } from "../auth/orm/Session";
 
 if (!process.env.IS_CLOUD) {

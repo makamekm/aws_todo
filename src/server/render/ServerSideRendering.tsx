@@ -9,8 +9,8 @@ import { renderRoutes } from "react-router-config";
 import { ServerStyleSheet } from "styled-components";
 import { getConfig } from "../../config";
 import { ApplicationEntry } from "../../iso/components/ApplicationEntry";
+import { getRoutes } from "../../iso/routing";
 import { StoreService } from "../../iso/services/StoreService";
-import { getRoutes } from "../../main/routing";
 import { Html } from "./Html";
 
 export const serverSideRendering = async (url: string, headers, user) => {

@@ -4,7 +4,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { renderRoutes } from "react-router-config";
 import { ApplicationEntry } from "../iso/components/ApplicationEntry";
-import { getRoutes } from "../main/routing";
+import { getRoutes } from "../iso/routing";
 
 const store = (window as any).__STORE_STATE__ || {};
 
