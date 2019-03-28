@@ -15,16 +15,15 @@ export class DBConnection {
     }
 
     public connect(): [Observable<ORM.Connection>, () => Promise<void>, () => ORM.Connection] {
-        const connectionPromise = this.createConnection();
         let connection: ORM.Connection;
         return [
-            from(connectionPromise)
+            from(this.createConnection())
                 .pipe(
                     tap((_connection) => {
                         connection = _connection;
                     }),
                 ),
-            async () => await connection.close(),
+            async () => connection && await connection.close(),
             () => connection,
         ];
     }
@@ -35,7 +34,6 @@ export class DBConnection {
             ...config,
             name,
         });
-        await connection.connect();
-        return connection;
+        return connection.connect();
     }
 }
