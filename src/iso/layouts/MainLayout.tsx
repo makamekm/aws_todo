@@ -4,10 +4,13 @@ import { Helmet } from "react-helmet";
 import { useInstance } from "react-ioc";
 import { withRouter } from "react-router";
 import { renderRoutes } from "react-router-config";
+import { useObservable } from "rxjs-hooks";
+import { pluck } from "rxjs/operators";
 import { StoreService } from "../../iso/services/StoreService";
 
 export const MainLayout = withRouter((props) => {
   const storeService = useInstance(StoreService);
+  const isLoading = useObservable(() => storeService.store$.pipe(pluck("isLoading")));
   return (
     <div className="layout">
       <Helmet>
@@ -15,7 +18,7 @@ export const MainLayout = withRouter((props) => {
         <link rel="stylesheet" type="text/css" href="/public/index.css" />
       </Helmet>
       <div className="layout-content">
-        <Spin tip="Loading..." spinning={storeService.isLoading}>
+        <Spin tip="Loading..." spinning={isLoading}>
           <Row justify="center" type="flex">
             <Col span={16} xs={23} sm={22} md={20} lg={18} xl={16}>
               {renderRoutes(props.route.routes)}

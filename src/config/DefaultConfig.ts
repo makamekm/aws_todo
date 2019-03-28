@@ -5,15 +5,10 @@ const config: IConfigScope = {
     logLevel: "info",
     db: {
       default: {
-        database: process.env.DB_DATABASE || "todo",
-        host: process.env.DB_HOSTNAME || "localhost",
-        password: process.env.DB_PASSWORD || "",
-        port: (process.env as any).DB_PORT || 5432,
-        type: (process.env as any).DB_TYPE || "postgres",
-        username: process.env.DB_USERNAME || "root",
+        type: "mongodb",
         synchronize: true,
         useNewUrlParser: true,
-        url: process.env.DB_URL,
+        url: process.env.DB_URL || "mongodb+srv://root:root@localhost/test?retryWrites=true",
       },
     },
     publicConfig: {

@@ -9,7 +9,7 @@ export class SessionStore extends Store {
         const session = await executeDB(
             (connection) => from(
                 connection
-                .getRepository(SessionModel)
+                .getMongoRepository(SessionModel)
                 .findOne({
                     where: {
                         sid,
@@ -26,7 +26,7 @@ export class SessionStore extends Store {
         await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(SessionModel)
+                    .getMongoRepository(SessionModel)
                     .findOne({
                         where: {
                             sid,
@@ -49,7 +49,7 @@ export class SessionStore extends Store {
                 ),
                 switchMap(
                     (session) => connection
-                        .getRepository(SessionModel)
+                        .getMongoRepository(SessionModel)
                         .save(session),
                 ),
             ),
@@ -62,7 +62,7 @@ export class SessionStore extends Store {
         await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(SessionModel)
+                    .getMongoRepository(SessionModel)
                     .findOne({
                         where: {
                             sid,
@@ -72,7 +72,7 @@ export class SessionStore extends Store {
             .pipe(
                 switchMap(
                     (session) => connection
-                        .getRepository(SessionModel)
+                        .getMongoRepository(SessionModel)
                         .remove(session),
                 ),
             ),

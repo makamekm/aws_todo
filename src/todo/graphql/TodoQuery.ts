@@ -7,12 +7,10 @@ import { TodoModel } from "../orm/Todo";
 export class TodoQuery {
     @TypeQL.Field({ type: [TodoModel] })
     public async list(@TypeQL.Context context): Promise<TodoModel[]> {
-        console.log(context.user);
-
         return await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(TodoModel)
+                    .getMongoRepository(TodoModel)
                     .createQueryBuilder("equity")
                     .orderBy("equity.date", "DESC")
                     .getMany(),

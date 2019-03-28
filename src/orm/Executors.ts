@@ -18,15 +18,15 @@ export function connectDB(scope: string = "default") {
     return connection.connect();
 }
 
-export async function executeDB<T>(observable: (connection: ORM.Connection) => Observable<T>): Promise<T> {
-    const [connection$, close] = connectDB();
-
-    return await connection$
+export async function executeDB<T>(
+    observable: (connection: ORM.Connection) => Observable<T>,
+    scope: string = "default",
+): Promise<T> {
+    return await connectDB(scope)
         .pipe(
             switchMap(
                 observable,
             ),
-            finalize(close),
         )
         .toPromise();
 }

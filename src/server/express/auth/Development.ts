@@ -24,7 +24,7 @@ if (!process.env.IS_CLOUD) {
         async (req, res, next) => {
             const sessions = await executeDB(
                 (connection) => from(
-                    connection.getRepository(SessionModel)
+                    connection.getMongoRepository(SessionModel)
                         .createQueryBuilder("equity")
                         .orderBy("equity.date", "DESC")
                         .getMany(),

@@ -1,39 +1,30 @@
 import { from, Observable } from "rxjs";
-import { tap } from "rxjs/operators";
 import * as ORM from "typeorm";
 
 export class DBConnection {
-    public static setManager(manager: ORM.ConnectionManager) {
-        this.manager = manager;
-    }
-    private static manager: ORM.ConnectionManager = ORM.getConnectionManager();
-
     private config: ORM.ConnectionOptions;
+    private connection: ORM.Connection;
+    private connectionPromise: Promise<ORM.Connection>;
 
     constructor(config: ORM.ConnectionOptions) {
         this.config = config;
     }
 
-    public connect(): [Observable<ORM.Connection>, () => Promise<void>, () => ORM.Connection] {
-        let connection: ORM.Connection;
-        return [
-            from(this.createConnection())
-                .pipe(
-                    tap((_connection) => {
-                        connection = _connection;
-                    }),
-                ),
-            async () => connection && await connection.close(),
-            () => connection,
-        ];
+    public connect(): Observable<ORM.Connection> {
+        return from(this.createConnection());
     }
 
     private async createConnection(config: ORM.ConnectionOptions = this.config): Promise<ORM.Connection> {
-        const name = (Math.random() * 100000).toFixed(0).toString();
-        const connection = DBConnection.manager.create({
+        if (this.connection) {
+            return this.connection;
+        }
+        if (this.connectionPromise) {
+            return await this.connectionPromise;
+        }
+        this.connectionPromise = ORM.createConnection({
             ...config,
-            name,
         });
-        return connection.connect();
+        this.connection = await this.connectionPromise;
+        return this.connection;
     }
 }

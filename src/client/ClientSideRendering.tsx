@@ -3,10 +3,16 @@ import * as memCache from "graphql-hooks-memcache";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { renderRoutes } from "react-router-config";
+import { BehaviorSubject } from "rxjs";
 import { ApplicationEntry } from "../iso/components/ApplicationEntry";
 import { getRoutes } from "../iso/routing";
+import { StoreService } from "../iso/services/StoreService";
 
-const store = (window as any).__STORE_STATE__ || {};
+const storeData = (window as any).__STORE_STATE__ || {};
+const store: StoreService = {
+  ...storeData,
+  store$: new BehaviorSubject(storeData.store$),
+};
 
 const client = new GraphQLClient({
   url: store.config.graphqlEndpoint,
@@ -29,7 +35,10 @@ ReactDOM.hydrate(
   ),
   document.getElementById("app"),
   () => {
-    store.isLoading = false;
+    store.store$.next({
+      ...store.store$.value,
+      isLoading: false,
+    });
   },
 );
 

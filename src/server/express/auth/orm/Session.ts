@@ -7,8 +7,9 @@ export enum SessionProvider {
 @DBRegistry.RegisterEntity("SessionModel")
 @TypeORM.Entity("session")
 export class SessionModel {
-    @TypeORM.PrimaryGeneratedColumn()
-    public id: number;
+
+    @TypeORM.ObjectIdColumn()
+    public id: TypeORM.ObjectID;
 
     @TypeORM.Column({
         length: 100,

@@ -1,3 +1,4 @@
+import { StoreService } from "iso/services/StoreService";
 import * as React from "react";
 import * as serialize from "serialize-javascript";
 
@@ -5,13 +6,13 @@ export const Html = (
   { markup, store, styles, helmet, state }:
   {
     markup: any;
-    store: any;
+    store: StoreService;
     styles: any;
     helmet: any;
     state: any;
   },
 ) => {
-  const serializedFlowState = serialize(store || {}, { isJSON: true });
+  const serializedFlowState = serialize({...store, store$: store.store$.value}, { isJSON: true });
   const serializedApolloState = serialize(state || {}, { isJSON: true });
 
   const flowState = (

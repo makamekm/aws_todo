@@ -9,9 +9,10 @@ export enum UserProvider {
 @TypeORM.Entity("session")
 @TypeQL.ObjectType()
 export class UserModel {
-    @TypeORM.PrimaryGeneratedColumn()
+
+    @TypeORM.ObjectIdColumn()
     @TypeQL.Field()
-    public id: number;
+    public id: TypeORM.ObjectID;
 
     @TypeORM.Column({
         length: 100,

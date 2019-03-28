@@ -6,6 +6,7 @@ import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Helmet } from "react-helmet";
 import { renderRoutes } from "react-router-config";
+import { BehaviorSubject } from "rxjs";
 import { ServerStyleSheet } from "styled-components";
 import { getConfig } from "../../config";
 import { ApplicationEntry } from "../../iso/components/ApplicationEntry";
@@ -36,10 +37,12 @@ export const serverSideRendering = async (url: string, headers, user) => {
   });
   const sheet = new ServerStyleSheet();
   const store: StoreService = {
+    store$: new BehaviorSubject({
+      user,
+      isLoading: true,
+    }),
     config,
-    user,
     isDev: !process.env.IS_CLOUD,
-    // isLoading: true,
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(

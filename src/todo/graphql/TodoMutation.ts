@@ -1,7 +1,8 @@
 import { GraphQLID } from "graphql/type";
-import { from, empty, of } from "rxjs";
+import { from } from "rxjs";
 import { switchMap, tap } from "rxjs/operators";
 import * as TypeQL from "typegql";
+import { ObjectID } from "typeorm";
 import { executeDB } from "../../orm";
 import { TodoModel } from "../orm/Todo";
 
@@ -34,7 +35,7 @@ export class TodoMutation {
                 ),
                 switchMap(
                     (todo) => connection
-                        .getRepository(TodoModel)
+                        .getMongoRepository(TodoModel)
                         .save(todo),
                 ),
             ),
@@ -42,11 +43,11 @@ export class TodoMutation {
     }
 
     @TypeQL.Field({ type: TodoModel })
-    public async toggle(@TypeQL.Arg({ type: GraphQLID }) id: number): Promise<TodoModel> {
+    public async toggle(@TypeQL.Arg({ type: GraphQLID }) id: ObjectID): Promise<TodoModel> {
         return await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(TodoModel)
+                    .getMongoRepository(TodoModel)
                     .findOne({
                         id,
                     }),
@@ -57,7 +58,7 @@ export class TodoMutation {
                 ),
                 switchMap(
                     (todo) => connection
-                        .getRepository(TodoModel)
+                        .getMongoRepository(TodoModel)
                         .save(todo),
                 ),
             ),
@@ -65,7 +66,7 @@ export class TodoMutation {
     }
 
     @TypeQL.Field({ type: TodoModel })
-    public async edit(@TypeQL.Arg({ type: GraphQLID }) id: number, name: string): Promise<TodoModel> {
+    public async edit(@TypeQL.Arg({ type: GraphQLID }) id: ObjectID, name: string): Promise<TodoModel> {
         if (name.length < 3) {
             throw Error("Name should be more than 3 chars");
         }
@@ -73,7 +74,7 @@ export class TodoMutation {
         return await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(TodoModel)
+                    .getMongoRepository(TodoModel)
                     .findOne({
                         id,
                     }),
@@ -84,7 +85,7 @@ export class TodoMutation {
                 ),
                 switchMap(
                     (todo) => connection
-                        .getRepository(TodoModel)
+                        .getMongoRepository(TodoModel)
                         .save(todo),
                 ),
             ),
@@ -92,11 +93,11 @@ export class TodoMutation {
     }
 
     @TypeQL.Field({ type: TodoModel })
-    public async delete(@TypeQL.Arg({ type: GraphQLID }) id: number): Promise<TodoModel> {
+    public async delete(@TypeQL.Arg({ type: GraphQLID }) id: ObjectID): Promise<TodoModel> {
         return await executeDB(
             (connection) => from(
                 connection
-                    .getRepository(TodoModel)
+                    .getMongoRepository(TodoModel)
                     .findOne({
                         id,
                     }),
@@ -104,7 +105,7 @@ export class TodoMutation {
             .pipe(
                 switchMap(
                     (todo) => connection
-                        .getRepository(TodoModel)
+                        .getMongoRepository(TodoModel)
                         .remove(todo),
                 ),
             ),

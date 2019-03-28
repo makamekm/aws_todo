@@ -5,9 +5,10 @@ import { DBRegistry, TypeORM } from "../../orm";
 @TypeORM.Entity("todo")
 @TypeQL.ObjectType()
 export class TodoModel {
-    @TypeORM.PrimaryGeneratedColumn()
-    @TypeQL.Field()
-    public id: number;
+
+    @TypeORM.ObjectIdColumn()
+    @TypeQL.Field({ type: String })
+    public id: TypeORM.ObjectID;
 
     @TypeORM.Column({
         length: 100,
