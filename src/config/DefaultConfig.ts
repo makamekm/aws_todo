@@ -12,6 +12,8 @@ const config: IConfigScope = {
         type: (process.env as any).DB_TYPE || "postgres",
         username: process.env.DB_USERNAME || "root",
         synchronize: true,
+        useNewUrlParser: true,
+        url: process.env.DB_URL,
       },
     },
     publicConfig: {
