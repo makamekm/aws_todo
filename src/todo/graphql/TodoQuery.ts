@@ -11,9 +11,11 @@ export class TodoQuery {
             (connection) => from(
                 connection
                     .getMongoRepository(TodoModel)
-                    .createQueryBuilder("equity")
-                    .orderBy("equity.date", "DESC")
-                    .getMany(),
+                    .find({
+                        order: {
+                            date: "DESC",
+                        },
+                    }),
             ),
         );
     }
