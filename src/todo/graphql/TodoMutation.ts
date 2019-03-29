@@ -49,7 +49,9 @@ export class TodoMutation {
                 connection
                     .getMongoRepository(TodoModel)
                     .findOne({
-                        id,
+                        where: {
+                            id,
+                        },
                     }),
             )
             .pipe(
@@ -76,7 +78,9 @@ export class TodoMutation {
                 connection
                     .getMongoRepository(TodoModel)
                     .findOne({
-                        id,
+                        where: {
+                            id,
+                        },
                     }),
             )
             .pipe(
@@ -99,10 +103,15 @@ export class TodoMutation {
                 connection
                     .getMongoRepository(TodoModel)
                     .findOne({
-                        id,
+                        where: {
+                            id,
+                        },
                     }),
             )
             .pipe(
+                tap((todo) => {
+                    console.log(id, todo);
+                }),
                 switchMap(
                     (todo) => connection
                         .getMongoRepository(TodoModel)

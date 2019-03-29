@@ -2,7 +2,7 @@ import * as TypeQL from "typegql";
 import { TodoMutation } from "./TodoMutation";
 import { TodoQuery } from "./TodoQuery";
 
-@TypeQL.Schema()
+@TypeQL.SchemaRoot()
 export class TodoSchema {
     @TypeQL.Query()
     @TypeQL.Mutation()

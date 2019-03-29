@@ -10,7 +10,8 @@ import { StoreService } from "../../iso/services/StoreService";
 
 export const MainLayout = withRouter((props) => {
   const storeService = useInstance(StoreService);
-  const isLoading = useObservable(() => storeService.store$.pipe(pluck("isLoading")));
+  useObservable(() => storeService.store$.pipe(pluck("isLoading")));
+  const isLoading = storeService.store$.value.isLoading;
   return (
     <div className="layout">
       <Helmet>

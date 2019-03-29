@@ -1,10 +1,10 @@
 import { ApolloServer } from "apollo-server-express";
 import * as TypeQL from "typegql";
 import { server } from ".";
-import { getSchemas } from "../graphql";
+import { TodoSchema } from "../graphql";
 
 const schema = TypeQL.compileSchema({
-    roots: getSchemas(),
+    roots: [ TodoSchema ],
 });
 
 const serverQl = new ApolloServer({
