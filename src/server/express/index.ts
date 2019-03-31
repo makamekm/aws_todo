@@ -13,17 +13,17 @@ export const server = (express as any)();
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser());
-server.use(session({
+server.use((req, ...args) => session({
     secret: "todo",
     cookie: {
         path: "/",
-        domain: process.env.HOST_DOMAIN,
+        domain: `.${req.header("host")}`,
         maxAge: 1000 * 60 * 60 * 24 * 14,
     },
     resave: false,
     saveUninitialized: false,
     store: new SessionStore(),
-}));
+})(req, ...args));
 server.use(passport.initialize());
 server.use(passport.session());
 
