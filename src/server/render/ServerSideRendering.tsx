@@ -35,6 +35,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
     cache: memCache(),
     fetch,
     headers,
+    credentials: "include",
   });
   const sheet = new ServerStyleSheet();
   const store: StoreService = {
