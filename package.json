@@ -88,7 +88,9 @@
     "typegql": "0.6.1",
     "typeorm": "0.2.14",
     "typescript": "3.3.3333",
-    "core-js": "3.0.0"
+    "core-js": "3.0.0",
+    "@babel/preset-env": "7.4.2",
+    "@babel/polyfill": "7.4.0"
   },
   "jest": {
     "projects": [
