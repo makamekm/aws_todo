@@ -36,7 +36,6 @@ export const serverSideRendering = async (url: string, headers, user) => {
     fetch,
     headers,
     fetchOptions: {
-      headers,
       credentials: "include",
     },
   });
