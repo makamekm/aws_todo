@@ -16,6 +16,8 @@ server.use(cookieParser());
 server.use(session({
     secret: "todo",
     cookie: {
+        path: "/",
+        domain: process.env.HOST_DOMAIN,
         maxAge: 1000 * 60 * 60 * 24 * 14,
     },
     resave: false,
