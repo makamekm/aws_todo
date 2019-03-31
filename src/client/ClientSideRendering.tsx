@@ -19,7 +19,9 @@ const client = new GraphQLClient({
   cache: memCache({
     initialState: (window as any).__APOLLO_STATE__ || {},
   }),
-  credentials: "include",
+  fetchOptions: {
+    credentials: "include",
+  },
 });
 
 const routes = renderRoutes(getRoutes());
