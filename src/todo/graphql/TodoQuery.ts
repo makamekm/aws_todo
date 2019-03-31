@@ -1,3 +1,4 @@
+import * as moment from "moment";
 import { from } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import * as TypeQL from "typegql";
@@ -14,8 +15,9 @@ export class TodoQuery {
         @TypeQL.Arg({type: TypeQL.Int}) day: number,
         @TypeQL.Context context,
     ): Promise<TodoModel[]> {
-        const start = new Date(year, month + 1, day);
-        const end = new Date(year, month + 1, day + 1);
+        const start = moment().year(year).month(month).date(day).hour(0).minute(0).second(0).millisecond(0).toDate();
+        const end = moment().year(year).month(month).date(day + 1).hour(0).minute(0).second(0).millisecond(0).toDate();
+        console.log(start);
 
         return await executeDB(
             (connection) => from(
@@ -47,8 +49,9 @@ export class TodoQuery {
             Array.from(Array(31).keys())
             .map((i) => {
                 const day = i + 1;
-                const start = new Date(year, month + 1, day);
-                const end = new Date(year, month + 1, day + 1);
+                const start = moment().year(year).month(month).date(day).hour(0).minute(0).second(0).millisecond(0).toDate();
+                const end = moment().year(year).month(month).date(day + 1).hour(0).minute(0).second(0).millisecond(0).toDate();
+
                 return executeDB(
                     (connection) => from(
                         connection

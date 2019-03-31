@@ -19,8 +19,8 @@ export class TodoMutation {
             throw Error("Name should be more than 3 chars");
         }
 
-        const start = new Date(year, month + 1, day);
-        const end = new Date(year, month + 1, day + 1);
+        const start = new Date(year, month, day, 0, 0, 0);
+        const end = new Date(year, month, day + 1, 0, 0, 0);
 
         const count = await executeDB(
             (connection) => from(
@@ -43,7 +43,7 @@ export class TodoMutation {
         const currentDate = new Date();
         const date = new Date(
             year,
-            month + 1,
+            month,
             day,
             currentDate.getHours(),
             currentDate.getMinutes(),

@@ -19,7 +19,7 @@ export const TodoList = withRouter((props: {
         const currentDate = moment();
         const year = props.match.params.year || currentDate.year();
         const month = props.match.params.month || (currentDate.month() + 1);
-        const day = props.match.params.day || (currentDate.date() + 1);
+        const day = props.match.params.day || currentDate.date();
         todoService.date$.next(moment().year(year).month(month - 1).date(day));
     }, [1]);
 
