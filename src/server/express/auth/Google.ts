@@ -2,9 +2,19 @@ import * as passport from "passport";
 import {  server } from "../";
 
 server.use("/auth/google/login",
-  passport.authenticate("google", {
-    scope: ["profile"],
-  }),
+  (req, res, next) => {
+    const headers = req.headers;
+    let url = process.env.HOST_URL;
+    const nowBaseUrl = headers["x-now-deployment-url"];
+    if (nowBaseUrl) {
+      const nowProto = headers["x-forwarded-proto"];
+      url = `${nowProto}://${nowBaseUrl}`;
+    }
+    return passport.authenticate("google", {
+      scope: ["profile"],
+      callbackURL: `${url}/auth/google/callback`,
+    })(req, res, next);
+  },
 );
 
 server.get("/auth/google/callback",

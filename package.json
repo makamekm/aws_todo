@@ -63,7 +63,7 @@
     "graphql-hooks-memcache": "^1.1.1",
     "graphql-hooks-ssr": "^1.0.7",
     "mime-types": "2.1.21",
-    "mongodb": "3.2.2",
+    "mongodb": "3.0.11",
     "node-fetch": "^2.3.0",
     "npm-run-all": "4.1.5",
     "passport": "0.4.0",
@@ -88,9 +88,7 @@
     "typegql": "0.6.1",
     "typeorm": "0.2.14",
     "typescript": "3.3.3333",
-    "core-js": "3.0.0",
-    "@babel/preset-env": "7.4.2",
-    "@babel/polyfill": "7.4.0"
+    "core-js": "3.0.0"
   },
   "jest": {
     "projects": [
