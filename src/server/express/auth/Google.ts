@@ -4,7 +4,7 @@ import {  server } from "../";
 server.use("/auth/google/login",
   (req, res, next) => {
     const headers = req.headers;
-    let url = process.env.HOST_URL;
+    let url = process.env.HOST_URL || headers.host;
     const nowBaseUrl = headers["x-now-deployment-url"];
     if (nowBaseUrl) {
       const nowProto = headers["x-forwarded-proto"];
