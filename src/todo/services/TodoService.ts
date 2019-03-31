@@ -1,11 +1,19 @@
 import { useMutation, useQuery } from "graphql-hooks";
+import * as moment from "moment";
 import * as React from "react";
+import { inject } from "react-ioc";
 import { BehaviorSubject, from, Subject } from "rxjs";
-import { map, tap, toArray } from "rxjs/operators";
+import { useObservable } from "rxjs-hooks";
+import { map, switchMap, tap, toArray } from "rxjs/operators";
+import { StoreService } from "../../iso/services/StoreService";
 
-export const QUERY_TODO_LIST = `{
+export const QUERY_TODO_LIST = `query ListTodo($year: Int!, $month: Int!, $day: Int!) {
     todoQuery {
-        list {
+        list(
+            year: $year,
+            month: $month,
+            day: $day,
+        ) {
             id
             name
             isDone
@@ -14,10 +22,39 @@ export const QUERY_TODO_LIST = `{
         }
     }
 }`;
+export const QUERY_TODO_STATS = `query StatsTodo($year: Int!, $month: Int!) {
+    todoQuery {
+        stats(
+            year: $year,
+            month: $month,
+        ) {
+            year
+            month
+            day
+            finished
+            total
+            unfinished {
+                id
+                name
+                isDone
+            }
+        }
+    }
+}`;
 
-export const MUTATION_TODO_CREATE = `mutation CreateTodo($name: String!) {
+export const MUTATION_TODO_CREATE = `mutation CreateTodo(
+        $year: Int!,
+        $month: Int!,
+        $day: Int!,
+        $name: String!
+    ) {
     todoMutation {
-        create(name: $name) {
+        create(
+            year: $year,
+            month: $month,
+            day: $day,
+            name: $name,
+        ) {
             id
             name
             isDone
@@ -26,7 +63,11 @@ export const MUTATION_TODO_CREATE = `mutation CreateTodo($name: String!) {
         }
     }
     todoQuery {
-        list {
+        list(
+            year: $year,
+            month: $month,
+            day: $day,
+        ) {
             id
             name
             isDone
@@ -36,7 +77,12 @@ export const MUTATION_TODO_CREATE = `mutation CreateTodo($name: String!) {
     }
 }`;
 
-export const MUTATION_TODO_DELETE = `mutation DeleteTodo($id: ID!) {
+export const MUTATION_TODO_DELETE = `mutation DeleteTodo(
+        $id: ID!,
+        $year: Int!,
+        $month: Int!,
+        $day: Int!,
+    ) {
     todoMutation {
         delete(id: $id) {
             id
@@ -47,7 +93,11 @@ export const MUTATION_TODO_DELETE = `mutation DeleteTodo($id: ID!) {
         }
     }
     todoQuery {
-        list {
+        list(
+            year: $year,
+            month: $month,
+            day: $day,
+        ) {
             id
             name
             isDone
@@ -57,7 +107,12 @@ export const MUTATION_TODO_DELETE = `mutation DeleteTodo($id: ID!) {
     }
 }`;
 
-export const MUTATION_TODO_TOGGLE = `mutation ToggleTodo($id: ID!) {
+export const MUTATION_TODO_TOGGLE = `mutation ToggleTodo(
+    $id: ID!,
+    $year: Int!,
+    $month: Int!,
+    $day: Int!,
+) {
     todoMutation {
         toggle(id: $id) {
             id
@@ -68,7 +123,11 @@ export const MUTATION_TODO_TOGGLE = `mutation ToggleTodo($id: ID!) {
         }
     }
     todoQuery {
-        list {
+        list(
+            year: $year,
+            month: $month,
+            day: $day,
+        ) {
             id
             name
             isDone
@@ -78,7 +137,13 @@ export const MUTATION_TODO_TOGGLE = `mutation ToggleTodo($id: ID!) {
     }
 }`;
 
-export const MUTATION_TODO_EDIT = `mutation EditTodo($id: ID!, $name: String!) {
+export const MUTATION_TODO_EDIT = `mutation EditTodo(
+        $id: ID!,
+        $name: String!,
+        $year: Int!,
+        $month: Int!,
+        $day: Int!,
+    ) {
     todoMutation {
         edit(id: $id, name: $name) {
             id
@@ -89,7 +154,11 @@ export const MUTATION_TODO_EDIT = `mutation EditTodo($id: ID!, $name: String!) {
         }
     }
     todoQuery {
-        list {
+        list(
+            year: $year,
+            month: $month,
+            day: $day,
+        ) {
             id
             name
             isDone
@@ -108,13 +177,55 @@ export interface ITodo {
 }
 
 export class TodoService {
+    @inject public storeService: StoreService;
     public searchString$ = new BehaviorSubject("");
     public data$: BehaviorSubject<ITodo[]> = new BehaviorSubject(null);
     public mutationError$: Subject<string> = new Subject();
     public queryErrors$: BehaviorSubject<string[]> = new BehaviorSubject([]);
+    public date$ = new BehaviorSubject(moment(this.storeService.date));
+
+    public findStats(stats, year, month, day) {
+        return stats && stats.find((s) => s.year === year && s.month === month && s.day === day);
+    }
+
+    public useStatsService = () => {
+        const response = useQuery(QUERY_TODO_STATS, {
+            variables: {
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+            },
+        });
+        const { data: queryData, loading, refetch, error } = response;
+        const stats = queryData && queryData.todoQuery && queryData.todoQuery.stats;
+        useObservable(() => this.date$.pipe(
+            switchMap(refetch),
+        ));
+
+        if (error) {
+            this.pipeQueryErrors(response);
+        }
+
+        return {
+            stats,
+            loading,
+            refetch,
+            getStats: (day) => this.findStats(
+                stats,
+                this.date$.value.year(),
+                this.date$.value.month(),
+                day,
+            ),
+        };
+    }
 
     public useDataService = () => {
-        const response = useQuery(QUERY_TODO_LIST);
+        const response = useQuery(QUERY_TODO_LIST, {
+            variables: {
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+                day: this.date$.value.date(),
+            },
+        });
         const { data: queryData, loading, refetch, error } = response;
         const list = queryData && queryData.todoQuery && queryData.todoQuery.list;
 
@@ -182,7 +293,14 @@ export class TodoService {
     }
 
     private async createTodo(createTodo, name) {
-        const result = await createTodo({ variables: { name } });
+        const result = await createTodo({
+            variables: {
+                name,
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+                day: this.date$.value.date(),
+            },
+        });
         if (!result.error) {
             this.data$.next(result.data.todoQuery.list);
             this.searchString$.next("");
@@ -192,7 +310,14 @@ export class TodoService {
     }
 
     private async deleteTodo(deleteTodo, id) {
-        const result = await deleteTodo({ variables: { id } });
+        const result = await deleteTodo({
+            variables: {
+                id,
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+                day: this.date$.value.date(),
+            },
+        });
         if (!result.error) {
             this.data$.next(result.data.todoQuery.list);
             this.searchString$.next("");
@@ -202,7 +327,15 @@ export class TodoService {
     }
 
     private async editTodo(editTodo, id, name) {
-        const result = await editTodo({ variables: { id, name } });
+        const result = await editTodo({
+            variables: {
+                id,
+                name,
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+                day: this.date$.value.date(),
+            },
+        });
         if (!result.error) {
             this.data$.next(result.data.todoQuery.list);
             this.searchString$.next("");
@@ -212,7 +345,14 @@ export class TodoService {
     }
 
     private async toggleTodo(toggleTodo, id) {
-        const result = await toggleTodo({ variables: { id } });
+        const result = await toggleTodo({
+            variables: {
+                id,
+                year: this.date$.value.year(),
+                month: this.date$.value.month(),
+                day: this.date$.value.date(),
+            },
+        });
         if (!result.error) {
             this.data$.next(result.data.todoQuery.list);
             this.searchString$.next("");

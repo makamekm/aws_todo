@@ -1,62 +1,52 @@
 import { Badge, Calendar } from "antd";
+import * as moment from "moment";
 import * as React from "react";
+import { useInstance } from "react-ioc";
+import { withRouter } from "react-router";
+import { QueryErrors } from "../components/QueryErrors";
+import { TodoService } from "../services/TodoService";
 
-function getListData(value) {
-    let listData;
-    switch (value.date()) {
-        case 8:
-            listData = [
-                { type: "warning", content: "This is warning event." },
-                { type: "success", content: "This is usual event." }
-            ];
-            break;
-        case 10:
-            listData = [
-                { type: "warning", content: "This is warning event." },
-                { type: "success", content: "This is usual event." },
-                { type: "error", content: "This is error event." }
-            ];
-            break;
-        case 15:
-            listData = [
-                { type: "warning", content: "This is warning event" },
-                {
-                    type: "success",
-                    content: "This is very long usual event。。....",
-                },
-                { type: "error", content: "This is error event 1." },
-                { type: "error", content: "This is error event 2." },
-                { type: "error", content: "This is error event 3." },
-                { type: "error", content: "This is error event 4." }
-            ];
-            break;
-        default:
-    }
-    return listData || [];
-}
-
-function dateCellRender(value) {
-    const listData = getListData(value);
+const dateCellRender = (getStats) => (value) => {
+    const today = moment();
+    const isToday = value.date() === today.date() && value.month() === today.month() && value.year() === today.year();
+    const data = getStats(value.date());
+    const unfinished: any[] = data ? data.unfinished : [];
     return (
         <>
-            {listData.map((item) => (
-                <React.Fragment key={item.content}>
-                    <Badge status={item.type} text={item.content} />
-                </React.Fragment>
+            {data && data.total > 0 && <div>
+                <Badge
+                    status={data.total === data.finished ? "success" : isToday ? "processing" : "default"}
+                    text={`${data.finished}/${data.total}`}/>
+            </div>}
+            {unfinished.slice(0, 3).map((item) => (
+                <div key={item.id}>
+                    <Badge status={"error"} text={item.name} />
+                </div>
             ))}
         </>
     );
-}
+};
 
-export const CalendarPage = () => {
+export const CalendarPage = withRouter(({history}) => {
     const [mode, setMode] = React.useState<any>("month");
+    const todoService = useInstance(TodoService);
+    const { getStats, loading } = todoService.useStatsService();
+
     return (
         <div>
+            <QueryErrors/>
             <Calendar
+                disabledDate={() => loading}
+                value={todoService.date$.value}
                 mode={mode}
-                onPanelChange={(_, newMode) => setMode(newMode)}
-                onSelect={(date) => console.log(date)}
-                dateCellRender={dateCellRender} />
+                onPanelChange={(date, newMode) => {
+                    setMode(newMode);
+                    todoService.date$.next(date);
+                }}
+                onSelect={(date) => {
+                    history.push(date.format("/YYYY/MM/DD"));
+                }}
+                dateCellRender={dateCellRender(getStats)} />
         </div>
     );
-};
+});

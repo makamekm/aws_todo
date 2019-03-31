@@ -6,12 +6,24 @@ import { TodoQuery } from "./TodoQuery";
 export class TodoSchema {
     @TypeQL.Query()
     @TypeQL.Mutation()
-    public todoQuery(): TodoQuery {
+    public todoQuery(
+        @TypeQL.Context context,
+    ): TodoQuery {
+        if (!context.user) {
+            throw new Error("You are not authorized");
+        }
+
         return new TodoQuery();
     }
 
     @TypeQL.Mutation()
-    public todoMutation(): TodoMutation {
+    public todoMutation(
+        @TypeQL.Context context,
+    ): TodoMutation {
+        if (!context.user) {
+            throw new Error("You are not authorized");
+        }
+
         return new TodoMutation();
     }
 }

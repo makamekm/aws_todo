@@ -75,7 +75,7 @@
     "react-apollo": "^2.5.2",
     "react-apollo-hooks": "^0.4.3",
     "react-dom": "16.8.4",
-    "react-helmet": "5.2.0",
+    "react-helmet": "6.0.0-beta",
     "react-ioc": "^1.0.0",
     "react-router-config": "4.4.0-beta.6",
     "react-router-dom": "4.3.1",

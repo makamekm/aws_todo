@@ -13,8 +13,6 @@ const store: StoreService = {
   ...storeData,
   store$: new BehaviorSubject(storeData.store$),
 };
-console.log("HERE", store.store$.value);
-
 
 const client = new GraphQLClient({
   url: store.config.graphqlEndpoint,

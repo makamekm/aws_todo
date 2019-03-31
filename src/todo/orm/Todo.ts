@@ -33,9 +33,15 @@ export class TodoModel {
     @TypeQL.Field()
     public isDone: boolean;
 
-    @TypeORM.CreateDateColumn()
+    @TypeORM.Column({
+        nullable: false,
+    })
     @TypeQL.Field({ type: String })
     public date: Date;
+
+    @TypeORM.CreateDateColumn()
+    @TypeQL.Field({ type: String })
+    public created: Date;
 
     @TypeORM.UpdateDateColumn()
     @TypeQL.Field({ type: String })

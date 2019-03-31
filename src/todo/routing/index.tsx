@@ -1,4 +1,5 @@
 import { AuthLayout } from "../../iso/layouts/AuthLayout";
+import { TodoLayout } from "../layouts/TodoLayout";
 import { CalendarPage } from "../pages/Calendar";
 import { Home } from "../pages/Home";
 
@@ -7,24 +8,19 @@ const routes = [
         component: AuthLayout,
         routes: [
             {
-                component: Home,
-                path: "/",
-                exact: true,
-            },
-            {
-                component: Home,
-                path: "/day",
-                exact: true,
-            },
-            {
-                component: Home,
-                path: "/day/:date",
-                exact: true,
-            },
-            {
-                component: CalendarPage,
-                path: "/calendar",
-                exact: true,
+                component: TodoLayout,
+                routes: [
+                    {
+                        component: CalendarPage,
+                        path: "/calendar",
+                        exact: true,
+                    },
+                    {
+                        component: Home,
+                        path: "/:year?/:month?/:day?",
+                        exact: true,
+                    },
+                ],
             },
         ],
     },

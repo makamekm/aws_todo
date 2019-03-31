@@ -1,6 +1,7 @@
 import { GraphQLClient } from "graphql-hooks";
 import * as memCache from "graphql-hooks-memcache";
 import { getInitialState } from "graphql-hooks-ssr";
+import * as moment from "moment";
 import fetch from "node-fetch";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
@@ -43,6 +44,7 @@ export const serverSideRendering = async (url: string, headers, user) => {
     }),
     config,
     isDev: !process.env.IS_CLOUD,
+    date: moment().format(),
   };
   const routes = renderRoutes(getRoutes());
   const app = sheet.collectStyles(
