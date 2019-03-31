@@ -9,7 +9,7 @@ import { TodoService } from "../services/TodoService";
 const dateCellRender = (getStats) => (value) => {
     const today = moment();
     const isToday = value.date() === today.date() && value.month() === today.month() && value.year() === today.year();
-    const data = getStats(value.date());
+    const data = getStats(value);
     const unfinished: any[] = data ? data.unfinished : [];
     return (
         <>

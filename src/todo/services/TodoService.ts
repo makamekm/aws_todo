@@ -209,11 +209,11 @@ export class TodoService {
             stats,
             loading,
             refetch,
-            getStats: (day) => this.findStats(
+            getStats: (date) => this.findStats(
                 stats,
-                this.date$.value.year(),
-                this.date$.value.month(),
-                day,
+                date.year(),
+                date.month(),
+                date.date(),
             ),
         };
     }
