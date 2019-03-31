@@ -9,7 +9,7 @@ export const Home = withRouter(({history}) => {
                 onBack={() => {
                     history.push("/calendar");
                 }}
-                subTitle="Back to Calendar"
+                title="Back to Calendar"
             />
         <TodoList/>
     </>;
