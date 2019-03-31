@@ -15,10 +15,24 @@ export class TodoQuery {
         @TypeQL.Arg({type: TypeQL.Int}) day: number,
         @TypeQL.Context context,
     ): Promise<TodoModel[]> {
-        const start = moment().year(year).month(month).date(day).hour(0).minute(0).second(0).millisecond(0).toDate();
-        const end = moment().year(year).month(month).date(day + 1).hour(0).minute(0).second(0).millisecond(0).toDate();
-        console.log(start);
-
+        const start = moment()
+            .year(year)
+            .month(month)
+            .date(day)
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .toDate();
+        const end = moment()
+            .year(year)
+            .month(month)
+            .date(day + 1)
+            .hour(0)
+            .minute(0)
+            .second(0)
+            .millisecond(0)
+            .toDate();
         return await executeDB(
             (connection) => from(
                 connection
@@ -46,12 +60,32 @@ export class TodoQuery {
         @TypeQL.Context context,
     ): Promise<TodoStatsModel[]> {
         return await Promise.all(
-            Array.from(Array(31).keys())
+            Array.from(Array(60).keys())
             .map((i) => {
-                const day = i + 1;
-                const start = moment().year(year).month(month).date(day).hour(0).minute(0).second(0).millisecond(0).toDate();
-                const end = moment().year(year).month(month).date(day + 1).hour(0).minute(0).second(0).millisecond(0).toDate();
-
+                const day = i - 15;
+                const start = moment()
+                    .year(year)
+                    .month(month)
+                    .date(day)
+                    .hour(0)
+                    .minute(0)
+                    .second(0)
+                    .millisecond(0)
+                    .toDate();
+                const end = moment()
+                    .year(year)
+                    .month(month)
+                    .date(day + 1)
+                    .hour(0)
+                    .minute(0)
+                    .second(0)
+                    .millisecond(0)
+                    .toDate();
+                const middle = moment(
+                        new Date(
+                            (end.getTime() + start.getTime()) / 2,
+                        ),
+                    );
                 return executeDB(
                     (connection) => from(
                         connection
@@ -84,9 +118,9 @@ export class TodoQuery {
                                 map((unfinished) => {
                                     const stats = new TodoStatsModel();
                                     stats.total = total;
-                                    stats.year = year;
-                                    stats.month = month;
-                                    stats.day = day;
+                                    stats.year = middle.year();
+                                    stats.month = middle.month();
+                                    stats.day = middle.date();
                                     stats.finished = total - unfinished.length;
                                     stats.unfinished = unfinished;
                                     return stats;

@@ -1,4 +1,4 @@
-import { Badge, Calendar } from "antd";
+import { Badge, Calendar, PageHeader } from "antd";
 import * as moment from "moment";
 import * as React from "react";
 import { useInstance } from "react-ioc";
@@ -33,7 +33,13 @@ export const CalendarPage = withRouter(({history}) => {
     const { getStats, loading } = todoService.useStatsService();
 
     return (
-        <div>
+        <>
+            <PageHeader
+                title="DayTodo Calendar"
+                extra={<div>
+                    Hello!
+                </div>}
+            />
             <QueryErrors/>
             <Calendar
                 disabledDate={() => loading}
@@ -47,6 +53,6 @@ export const CalendarPage = withRouter(({history}) => {
                     history.push(date.format("/YYYY/MM/DD"));
                 }}
                 dateCellRender={dateCellRender(getStats)} />
-        </div>
+        </>
     );
 });
