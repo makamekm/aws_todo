@@ -26,6 +26,7 @@ export const serverSideRendering = async (req) => {
   );
   const baseUrl = req.header("host");
   config.graphqlEndpoint = `${req.header("x-forwarded-proto") || "http"}://${baseUrl}/graphql`;
+  console.log("GraphQLURL:", config.graphqlEndpoint);
   const client = new GraphQLClient({
     url: config.graphqlEndpoint,
     cache: memCache(),
