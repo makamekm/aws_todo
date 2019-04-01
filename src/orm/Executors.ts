@@ -1,5 +1,5 @@
-import { Observable } from "rxjs";
-import { finalize, switchMap } from "rxjs/operators";
+import { Observable, throwError } from "rxjs";
+import { catchError, switchMap } from "rxjs/operators";
 import * as ORM from "typeorm";
 import { DBConnection } from "./DBConnection";
 import { initializeDBConnection } from "./Utils";
@@ -24,9 +24,17 @@ export async function executeDB<T>(
 ): Promise<T> {
     return await connectDB(scope)
         .pipe(
+            catchError((err) => {
+                console.error(err);
+                return throwError(err);
+            }),
             switchMap(
                 observable,
             ),
+            catchError((err) => {
+                console.error(err);
+                return throwError(err);
+            }),
         )
         .toPromise();
 }
