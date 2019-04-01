@@ -88,7 +88,7 @@
     "typegql": "0.6.1",
     "typeorm": "0.2.14",
     "typescript": "3.3.3333",
-    "core-js": "3.0.0"
+    "cors": "2.8.5"
   },
   "jest": {
     "projects": [

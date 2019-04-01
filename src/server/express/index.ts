@@ -1,5 +1,6 @@
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
+import * as cors from "cors";
 import * as express from "express";
 import * as session from "express-session";
 import * as passport from "passport";
@@ -10,10 +11,13 @@ import "./PassportStrategy";
 
 export const server = (express as any)();
 
+server.use((req, res, next) => cors({
+    origin: `${req.header("x-forwarded-proto") || "http"}://${req.header("host")}`,
+})(req, res, next));
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: false }));
 server.use(cookieParser());
-server.use((req, ...args) => session({
+server.use((req, res, next) => session({
     secret: "todo",
     cookie: {
         path: "/",
@@ -23,7 +27,7 @@ server.use((req, ...args) => session({
     resave: false,
     saveUninitialized: false,
     store: new SessionStore(),
-})(req, ...args));
+})(req, res, next));
 server.use(passport.initialize());
 server.use(passport.session());
 
