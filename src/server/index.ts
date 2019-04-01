@@ -3,12 +3,8 @@ import {serverSideRendering} from "./render/ServerSideRendering";
 
 server.use("*",
     async (req, res, next) => {
-        const headers = req.headers;
-        const user = req.user;
-        const url = req.originalUrl;
-
         try {
-            const body = await serverSideRendering(url, headers, user);
+            const body = await serverSideRendering(req);
             res.send(body);
         } catch (error) {
             // console.error(error);

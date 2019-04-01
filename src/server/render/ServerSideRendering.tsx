@@ -15,21 +15,17 @@ import { getRoutes } from "../../iso/routing";
 import { StoreService } from "../../iso/services/StoreService";
 import { Html } from "./Html";
 
-export const serverSideRendering = async (url: string, headers, user) => {
+export const serverSideRendering = async (req) => {
+  const headers = req.headers;
+  const user = req.user;
+  const url = req.originalUrl;
   const config = JSON.parse(
     JSON.stringify(
       getConfig().publicConfig,
     ),
   );
-  const baseUrl = headers.host;
-  if (baseUrl) {
-    config.graphqlEndpoint = `http://${baseUrl}/graphql`;
-  }
-  const nowBaseUrl = headers["x-now-deployment-url"];
-  if (nowBaseUrl) {
-    const nowProto = headers["x-forwarded-proto"];
-    config.graphqlEndpoint = `${nowProto}://${nowBaseUrl}/graphql`;
-  }
+  const baseUrl = req.header("host");
+  config.graphqlEndpoint = `${req.header("x-forwarded-proto") || "http"}://${baseUrl}/graphql`;
   const client = new GraphQLClient({
     url: config.graphqlEndpoint,
     cache: memCache(),
