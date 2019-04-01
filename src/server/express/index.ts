@@ -21,7 +21,7 @@ server.use((req, res, next) => session({
     secret: "todo",
     cookie: {
         path: "/",
-        domain: `.${req.header("host")}`,
+        domain: `${req.header("host")}`,
         maxAge: 1000 * 60 * 60 * 24 * 14,
     },
     resave: false,
