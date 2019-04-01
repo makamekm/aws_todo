@@ -1,8 +1,9 @@
 import { GraphQLClient } from "graphql-hooks";
 import * as memCache from "graphql-hooks-memcache";
 import { getInitialState } from "graphql-hooks-ssr";
+import "isomorphic-fetch";
 import * as moment from "moment";
-import fetch from "node-fetch";
+// import fetch from "node-fetch";
 import * as React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Helmet } from "react-helmet";
@@ -26,7 +27,6 @@ export const serverSideRendering = async (req) => {
   );
   const baseUrl = req.header("host");
   config.graphqlEndpoint = `${req.header("x-forwarded-proto") || "http"}://${baseUrl}/graphql`;
-  console.log("GraphQLURL:", config.graphqlEndpoint);
   const client = new GraphQLClient({
     url: config.graphqlEndpoint,
     cache: memCache(),
