@@ -14,7 +14,7 @@
         }
     ],
     "env": {
-        "IS_CLOUD": "1",
+        "IS_DEV_CLOUD": "1",
         "GOOGLE_CLIENT_ID": "@google-client-id",
         "GOOGLE_CLIENT_SECRET": "@google-client-secret",
         "HOST_URL": "https://doto.now.sh",
