@@ -21,10 +21,9 @@ export const TodoList = withRouter((props: {
         const month = props.match.params.month || (currentDate.month() + 1);
         const day = props.match.params.day || currentDate.date();
         todoService.date$.next(moment().year(year).month(month - 1).date(day));
-    }, [1]);
+    }, [props.match.params.year, props.match.params.month, props.match.params.day]);
 
     const { loading } = todoService.useDataService();
-    useObservable(() => todoService.data$);
 
     return (
         <>

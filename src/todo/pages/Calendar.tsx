@@ -1,4 +1,4 @@
-import { Badge, Calendar, PageHeader } from "antd";
+import { Badge, Button, Calendar, PageHeader, Spin } from "antd";
 import * as moment from "moment";
 import * as React from "react";
 import { useInstance } from "react-ioc";
@@ -35,24 +35,28 @@ export const CalendarPage = withRouter(({history}) => {
     return (
         <>
             <PageHeader
-                title="DayTodo Calendar"
+                title="Calendar"
                 extra={<div>
-                    Hello!
+                    <Button type="dashed">
+                        Logout
+                    </Button>
                 </div>}
             />
             <QueryErrors/>
-            <Calendar
-                disabledDate={() => loading}
-                value={todoService.date$.value}
-                mode={mode}
-                onPanelChange={(date, newMode) => {
-                    setMode(newMode);
-                    todoService.date$.next(date);
-                }}
-                onSelect={(date) => {
-                    history.push(date.format("/YYYY/MM/DD"));
-                }}
-                dateCellRender={dateCellRender(getStats)} />
+            <Spin spinning={loading}>
+                <Calendar
+                    disabledDate={() => loading}
+                    value={todoService.date$.value}
+                    mode={mode}
+                    onPanelChange={(date, newMode) => {
+                        setMode(newMode);
+                        todoService.date$.next(date);
+                    }}
+                    onSelect={(date) => {
+                        history.push(date.format("/YYYY/MM/DD"));
+                    }}
+                    dateCellRender={dateCellRender(getStats)} />
+            </Spin>
         </>
     );
 });

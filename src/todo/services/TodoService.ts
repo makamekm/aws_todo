@@ -189,16 +189,18 @@ export class TodoService {
     }
 
     public useStatsService = () => {
-        const response = useQuery(QUERY_TODO_STATS, {
+        const getDataOptions = () => ({
             variables: {
                 year: this.date$.value.year(),
                 month: this.date$.value.month(),
             },
         });
+        const response = useQuery(QUERY_TODO_STATS, getDataOptions());
         const { data: queryData, loading, refetch, error } = response;
         const stats = queryData && queryData.todoQuery && queryData.todoQuery.stats;
         useObservable(() => this.date$.pipe(
-            switchMap(refetch),
+            tap(console.log),
+            switchMap(() => refetch(getDataOptions())),
         ));
 
         if (error) {
@@ -219,15 +221,20 @@ export class TodoService {
     }
 
     public useDataService = () => {
-        const response = useQuery(QUERY_TODO_LIST, {
+        const getDataOptions = () => ({
             variables: {
                 year: this.date$.value.year(),
                 month: this.date$.value.month(),
                 day: this.date$.value.date(),
             },
         });
+        const response = useQuery(QUERY_TODO_LIST, getDataOptions());
         const { data: queryData, loading, refetch, error } = response;
         const list = queryData && queryData.todoQuery && queryData.todoQuery.list;
+        useObservable(() => this.date$.pipe(
+            switchMap(() => refetch(getDataOptions())),
+        ));
+        useObservable(() => this.data$);
 
         if (error) {
             this.pipeQueryErrors(response);
